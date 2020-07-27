@@ -273,8 +273,11 @@ func (a *AndroidApp) proguardBuildActions(ctx android.ModuleContext) {
 func (a *AndroidApp) dexBuildActions(ctx android.ModuleContext) android.Path {
 
 	var installDir string
+	//FIXME
 	if ctx.ModuleName() == "framework-res" {
 		// framework-res.apk is installed as system/framework/framework-res.apk
+		installDir = "framework"
+	} else if ctx.ModuleName() == "mediatek-res" {
 		installDir = "framework"
 	} else if Bool(a.appProperties.Privileged) {
 		installDir = filepath.Join("priv-app", a.installApkName)
@@ -286,6 +289,10 @@ func (a *AndroidApp) dexBuildActions(ctx android.ModuleContext) android.Path {
 	a.dexpreopter.uncompressedDex = a.shouldUncompressDex(ctx)
 	a.deviceProperties.UncompressDex = a.dexpreopter.uncompressedDex
 
+	//FIXME
+	if ctx.ModuleName() == "mediatek-res" {
+		return a.maybeStrippedDexJarFile
+	}
 	if ctx.ModuleName() != "framework-res" {
 		a.Module.compile(ctx, a.aaptSrcJar)
 	}

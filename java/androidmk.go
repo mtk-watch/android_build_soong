@@ -278,6 +278,12 @@ func (app *AndroidApp) AndroidMk() android.AndroidMkData {
 					fmt.Fprintln(w, "LOCAL_NO_STANDARD_LIBRARIES := true")
 				}
 
+				//FIXME
+				if app.Name() == "mediatek-res" {
+					fmt.Fprintln(w, "LOCAL_MODULE_PATH := $(TARGET_OUT_JAVA_LIBRARIES)")
+					fmt.Fprintln(w, "LOCAL_NO_STANDARD_LIBRARIES := true")
+				}
+
 				filterRRO := func(filter overlayType) android.Paths {
 					var paths android.Paths
 					for _, d := range app.rroDirs {
